@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  hxq-llm-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hxq-llm-api
+    restart: unless-stopped
+    ports:
+      - "32105:32105"
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=32105
+      - TZ=Asia/Shanghai
+    volumes:
+      # 挂载整个项目目录，代码修改实时同步
+      - .:/opt/hxq_llm_api
+      # 排除容器内的虚拟环境，避免冲突
+      - /opt/hxq_llm_api/.venv
+    networks:
+      - hxq-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:32105/server_check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  hxq-network:
+    driver: bridge
