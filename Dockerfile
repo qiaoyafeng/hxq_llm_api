@@ -8,7 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # 安装 uv（使用国内镜像加速）
-RUN curl -LsSf https://mirrors.tuna.tsinghua.edu.cn/github-release/astral-sh/uv/LatestRelease/uv-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /bin --strip-components=1
+RUN curl -LsSf https://gitee.com/wangnov/uv-custom/releases/download/latest/uv-installer-custom.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
 
 # uv 使用阿里云 PyPI 镜像源
 ENV UV_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
