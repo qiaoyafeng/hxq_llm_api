@@ -7,8 +7,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc procps vim curl && \
     rm -rf /var/lib/apt/lists/*
 
-# 安装 uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# 安装 uv（使用国内镜像加速）
+RUN curl -LsSf https://mirrors.tuna.tsinghua.edu.cn/github-release/astral-sh/uv/LatestRelease/uv-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /bin --strip-components=1
 
 # uv 使用阿里云 PyPI 镜像源
 ENV UV_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
