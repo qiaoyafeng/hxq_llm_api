@@ -4,6 +4,7 @@
 """
 import json
 import uuid
+from datetime import datetime
 from typing import AsyncGenerator, Dict, List, Optional
 
 from configs.base import settings
@@ -109,7 +110,10 @@ async def create_chat_completion_response(
 
     # 构建系统提示词
     role_name = HXQ_ROLES.get(safe_int(chat_role_id), HXQ_ROLES[HXQ_DEFAULT_ROLE_ID])
-    default_hxq_sys_message = f"{default_sys_message.format(role_name=role_name)}"
+    weekday_map = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
+    now = datetime.now()
+    current_datetime = now.strftime("%Y年%m月%d日 %H:%M") + " " + weekday_map[now.weekday()]
+    default_hxq_sys_message = f"{default_sys_message.format(role_name=role_name, current_datetime=current_datetime)}"
     if system:
         system = default_hxq_sys_message + system
     else:
